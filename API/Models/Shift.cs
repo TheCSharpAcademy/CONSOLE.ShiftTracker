@@ -1,15 +1,15 @@
-﻿using System.Security.Permissions;
-using System.Security.Policy;
+﻿using Microsoft.CodeAnalysis;
+using System.ComponentModel.DataAnnotations;
 
-namespace ShiftTracker.Models
+namespace API.Models
 {
     public class Shift
     {
-        public int ShiftId { get; set; }
+        public int ShiftID { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public decimal Pay { get; set; }
         public decimal Minutes { get; set; }
-        public string Location { get; set; }
+        public string? Location { get; set; }
     }
 }
