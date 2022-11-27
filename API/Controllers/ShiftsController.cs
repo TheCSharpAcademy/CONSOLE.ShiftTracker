@@ -1,32 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ShiftTracker.Models;
+using API.Models;
 
-namespace ShiftTracker.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ShiftsController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly ShiftContext _context;
 
-        public ShiftsController(DataContext context)
+        public ShiftsController(ShiftContext context)
         {
             _context = context;
         }
 
         // GET: api/Shifts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Shift>>> GetShifts()
+        public async Task<ActionResult<IEnumerable<Shift>>> GetShiftsList()
         {
-            return await _context.Shifts.ToListAsync();
+            return await _context.ShiftsList.ToListAsync();
         }
 
         // GET: api/Shifts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Shift>> GetShift(int id)
         {
-            var shift = await _context.Shifts.FindAsync(id);
+            var shift = await _context.ShiftsList.FindAsync(id);
 
             if (shift == null)
             {
@@ -41,7 +46,7 @@ namespace ShiftTracker.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutShift(int id, Shift shift)
         {
-            if (id != shift.ShiftId)
+            if (id != shift.ShiftID)
             {
                 return BadRequest();
             }
@@ -72,23 +77,23 @@ namespace ShiftTracker.Controllers
         [HttpPost]
         public async Task<ActionResult<Shift>> PostShift(Shift shift)
         {
-            _context.Shifts.Add(shift);
+            _context.ShiftsList.Add(shift);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetShift), new { id = shift.ShiftId }, shift);
+            return CreatedAtAction(nameof(GetShift), new { id = shift.ShiftID }, shift);
         }
 
         // DELETE: api/Shifts/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteShift(int id)
         {
-            var shift = await _context.Shifts.FindAsync(id);
+            var shift = await _context.ShiftsList.FindAsync(id);
             if (shift == null)
             {
                 return NotFound();
             }
 
-            _context.Shifts.Remove(shift);
+            _context.ShiftsList.Remove(shift);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -96,7 +101,7 @@ namespace ShiftTracker.Controllers
 
         private bool ShiftExists(int id)
         {
-            return _context.Shifts.Any(e => e.ShiftId == id);
+            return _context.ShiftsList.Any(e => e.ShiftID == id);
         }
     }
 }
